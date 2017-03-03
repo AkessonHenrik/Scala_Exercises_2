@@ -67,7 +67,7 @@ def fibonacci(n: Int): Int = {
 }
 
 println((for (i <- 1 to 10) yield i).map(i => i match {
-  case l if i%2==0 => factorial(i)
+  case i if i % 2 == 0 => factorial(i)
   case _ => fibonacci(i)
 }))
 
@@ -78,10 +78,10 @@ chaque liste du vecteur est la liste initiale multipliée par une des composante
 */
 
 def ex5(vector: Vector[Int], list: List[Int]): Vector[List[Int]] = {
-  vector.map(i => list.map(j => i*j))
+  vector.map(i => list.map(j => i * j))
 }
 
-println(ex5(Vector(1,2,3), List(1,1,1)))
+println(ex5(Vector(1, 2, 3), List(1, 1, 1)))
 
 
 /*
@@ -90,14 +90,21 @@ Ecrivez la fonction insert, qui permet d’ordonner la liste dans un ordre crois
 Appelez la fonction customSort avec la liste définie.
 */
 
+val list = List(1, 5, 7, 2, 8, 4, 3, 6, 9)
+
 def customSort(list: List[Int]): List[Int] = list match {
   case Nil => Nil
   case x :: xs => insert(x, customSort(xs))
 }
 
 def insert(value: Int, list: List[Int]): List[Int] = {
-  
+  list match {
+    case Nil => List(value)
+    case x :: xs => if (value < x) value :: list else x :: insert(value, xs)
+  }
 }
+println("customSort")
+println(customSort(list))
 
 /*
 Ecrivez une fonction prenant une List[Int] et une condition Int => Boolean en paramètre.
@@ -106,3 +113,11 @@ Cette fonction permet de filtrer la liste passée en paramètre selon la conditi
 Vous pouvez vérifier votre implémentation en utilisant la fonction filter prédéfinie pour les collections, et
 vérifier, par exemple, que la liste ne conserve que les nombres impairs.
 */
+
+def ex7(list: List[Int], condition: Int => Boolean): List[Int] = {
+  list.filter(condition)
+}
+def cond(value: Int): Boolean = {
+  value % 2 == 1
+}
+println("Filter: " + ex7(list, cond))
